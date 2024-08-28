@@ -1,0 +1,1 @@
+DB_NAME = "Wordlists-and-Cybersecurity"
