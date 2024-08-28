@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.5.4"
+  },
+  "name": "wordlists-and-cybersecurity",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "commonjs",
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3"
+  },
+  "scripts": {
+    "start": "node ./backend/src/main.js",
+    "dev": "nodemon ./backend/src/main.js"
+  },
+  "author": "Tejas Kakani",
+  "license": "ISC",
+  "description": ""
+}
