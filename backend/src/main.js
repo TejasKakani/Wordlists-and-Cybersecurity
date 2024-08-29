@@ -1,10 +1,5 @@
-const dotenv = require("dotenv");
-const app = require("./app");
+const app = require("./config");
 const { connectDB } = require("./db/main.db");
-
-dotenv.config({
-    path: "./backend/src/.env"
-});
 
 const port = process.env.PORT || 3000;
 

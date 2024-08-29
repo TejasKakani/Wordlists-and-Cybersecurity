@@ -1,5 +1,11 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv");
+
+//configure .env file
+dotenv.config({
+    path: "./backend/src/.env"
+});
 
 //configuring app
 const app = express();
