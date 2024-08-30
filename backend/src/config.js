@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
 //configure .env file
 dotenv.config({
@@ -18,10 +19,10 @@ app.use(cors({
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true , limit: "16kb"}));
 app.use(express.static("public"));
+app.use(cookieParser());
 
 //routes configuration
 const healthCheckRoute = require("./routes/healthCheck.routes");
 app.use("/api/v1/health-check", healthCheckRoute);
-
 
 module.exports = app;
