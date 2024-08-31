@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
+const errorHandler = require("./middlewares/error.middlewares");
 
 //configure .env file
 dotenv.config({
@@ -23,6 +24,10 @@ app.use(cookieParser());
 
 //routes configuration
 const healthCheckRoute = require("./routes/healthCheck.routes");
+const userRoute = require("./routes/user.routes");
+
 app.use("/api/v1/health-check", healthCheckRoute);
+app.use("/api/v1/users", userRoute);
+// app.use(errorHandler);
 
 module.exports = app;

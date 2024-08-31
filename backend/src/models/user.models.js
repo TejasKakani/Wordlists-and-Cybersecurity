@@ -1,6 +1,6 @@
-const moongose = require('mongoose');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 /*
     username
@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
     updatedAt
 */
 
-const userSchema = new moongose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: [true, "Username is required"],
@@ -61,4 +61,4 @@ userSchema.methods.generateRefreshToken = function(){
     }, process.env.REFRESH_TOKEN_SECRET, {expiresIn: process.env.REFRESH_TOKEN_EXPIRATION});
 }
 
-module.exports = moongose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
