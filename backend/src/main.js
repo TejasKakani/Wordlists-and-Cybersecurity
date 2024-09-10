@@ -1,7 +1,7 @@
 const app = require("./config");
 const { connectDB } = require("./db/main.db");
 
-const addon = require("../../build/Release/addon");
+const addon = require("../build/Release/addon");
 
 const port = process.env.PORT || 3000;
 

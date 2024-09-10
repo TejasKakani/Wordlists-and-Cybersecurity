@@ -2,7 +2,7 @@
 	"targets": [
 		{
 			"target_name": "addon",
-			"sources": [ "backend/src/cpp/hello.cc" ],
+			"sources": [ "./src/cpp/hello.cc" ],
 			"include_dirs": [
 			     "./node_modules/node-addon-api/"
 			],

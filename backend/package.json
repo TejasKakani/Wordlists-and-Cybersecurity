@@ -19,8 +19,8 @@
     "prettier": "^3.3.3"
   },
   "scripts": {
-    "start": "node ./backend/src/main.js",
-    "dev": "nodemon ./backend/src/main.js",
+    "start": "node ./src/main.js",
+    "dev": "nodemon ./src/main.js",
     "build": "node-gyp configure build",
     "clean": "node-gyp clean"
   },
