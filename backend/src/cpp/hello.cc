@@ -1,24 +1,28 @@
-#include <node.h>
+// hello_array.cc
+#include <napi.h>
+#include <vector>
+#include <string>
 
-namespace demo {
+Napi::Array GetStringArray(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
 
-    using v8::FunctionCallbackInfo;
-    using v8::Isolate;
-    using v8::Local;
-    using v8::Object;
-    using v8::String;
-    using v8::Value;
+    // Create a C++ vector of strings
+    std::vector<std::string> myStrings = { "Hello", "from", "C++", "addon" };
 
-    void Method(const FunctionCallbackInfo<Value>& args) {
-        Isolate* isolate = args.GetIsolate();
-        args.GetReturnValue().Set(String::NewFromUtf8(
-            isolate, "world").ToLocalChecked());
+    // Create a JavaScript array
+    Napi::Array result = Napi::Array::New(env, myStrings.size());
+
+    // Fill the JavaScript array with C++ strings
+    for (size_t i = 0; i < myStrings.size(); i++) {
+        result.Set(i, Napi::String::New(env, myStrings[i]));
     }
 
-    void Initialize(Local<Object> exports) {
-        NODE_SET_METHOD(exports, "hello", Method);
-    }
-
-    NODE_MODULE(addon1, Initialize)
-
+    return result;
 }
+
+Napi::Object Init(Napi::Env env, Napi::Object exports) {
+    exports.Set(Napi::String::New(env, "getStringArray"), Napi::Function::New(env, GetStringArray));
+    return exports;
+}
+
+NODE_API_MODULE(addon, Init)

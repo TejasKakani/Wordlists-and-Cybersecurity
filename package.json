@@ -20,7 +20,9 @@
   },
   "scripts": {
     "start": "node ./backend/src/main.js",
-    "dev": "nodemon ./backend/src/main.js"
+    "dev": "nodemon ./backend/src/main.js",
+    "build": "node-gyp configure build",
+    "clean": "node-gyp clean"
   },
   "author": "Tejas Kakani",
   "license": "ISC",
