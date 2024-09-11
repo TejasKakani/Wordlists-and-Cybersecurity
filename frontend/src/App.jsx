@@ -1,7 +1,9 @@
+import "./index.css"
+
 function App() {
 
   return (
-    <h1>Wordlists and Cybersecurity</h1>
+      <h1 className="bg-green-400">Wordlists and Cybersecurity</h1>
   )
 }
 
