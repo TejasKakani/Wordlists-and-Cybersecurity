@@ -7,11 +7,11 @@ function Clue() {
 
     const [clue, setClue] = useState([]);
 
+    const [length, setLength] = useState(2);
+
     const [modifyClue, setModifyClue] = useState("");
 
-    //const [errorMessage, setErrorMessage] = useState("");
     const [errorState, setErrorState] = useInputBoxError();
-    //const [inputBoxClasses, setInputBoxClasses] = useState("border-2 border-indigo-300 rounded-l-lg");
 
     const buttonClasses = [
         `px-2 border-2 border-indigo-300 active:bg-indigo-100 bg-indigo-300`,
@@ -49,7 +49,7 @@ function Clue() {
                 <InputBox inputLabel="Given Clues: " inputType="text" isReadOnly={true} inputValue={clue} inputName="clues"
                     inputClasses="rounded-lg" inputPlaceHolder="" />
                 <br />
-                <InputBox inputLabel="Add Clue " inputType="text" isReadOnly={false} inputValue={modifyClue} inputName="addClue"
+                <InputBox inputLabel="Add/Remove Clue " inputType="text" isReadOnly={false} inputValue={modifyClue} inputName="addClue"
                     inputClasses={errorState[1]} inputPlaceHolder="Clue"
                     onChangeFn={(e) => {
                         setErrorState("", "border-2 border-indigo-300 rounded-l-lg");
@@ -59,7 +59,14 @@ function Clue() {
                         return setModifyClue(e.target.value.trim());
                     }} errorMessage={errorState[0]} buttonClasses={buttonClasses}
                     buttonOnclick={buttonOnclick} buttonName={buttonName}
+                />
+                <br/>
+                <span className="flex">Password Length
+                    <input type="range" min="2" max={clue.length} value={length} step="1"
+                        onChange={(e) => setLength(e.target.value)} className="w-1/5 mx-1"
                     />
+                    <label>Length: {length}</label>
+                </span>
             </div>
         </>
     )

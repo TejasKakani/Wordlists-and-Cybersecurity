@@ -1,5 +1,4 @@
 import Buttons from "./Buttons";
-
 function InputBox({ inputLabel, inputType, isReadOnly, inputValue, inputName,
                     inputClasses, inputPlaceHolder, onChangeFn, buttonClasses = [], buttonOnclick = [], buttonName = [], errorMessage}) {
     
