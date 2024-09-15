@@ -2,6 +2,7 @@ import { useState } from "react"
 import "../index.css"
 import InputBox from "./InputBox"
 import useInputBoxError from "../hooks/useInputBoxError";
+import PasswordLength from "./PasswordLength";
 
 function Clue() {
 
@@ -60,13 +61,8 @@ function Clue() {
                     }} errorMessage={errorState[0]} buttonClasses={buttonClasses}
                     buttonOnclick={buttonOnclick} buttonName={buttonName}
                 />
-                <br/>
-                <span className="flex">Password Length
-                    <input type="range" min="2" max={clue.length} value={length} step="1"
-                        onChange={(e) => setLength(e.target.value)} className="w-1/5 mx-1"
-                    />
-                    <label>Length: {length}</label>
-                </span>
+                <br />
+                <PasswordLength clueLength={clue.length} rangeValue={length} setLength={setLength} />
             </div>
         </>
     )
