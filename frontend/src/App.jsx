@@ -1,5 +1,6 @@
 import { Route, createRoutesFromElements, createBrowserRouter } from 'react-router-dom';
 import Clue from './components/Clue';
+import { RouterProvider } from 'react-router-dom'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -9,4 +10,12 @@ const router = createBrowserRouter(
     )
 );
 
-export default router;
+function App() {
+    return (
+        <>
+            <RouterProvider router={router} />
+        </>
+    );
+}
+
+export default App;
