@@ -21,8 +21,7 @@
   "scripts": {
     "start": "node ./src/main.js",
     "dev": "nodemon ./src/main.js",
-    "build": "node-gyp configure build",
-    "clean": "node-gyp clean"
+    "build": "node-gyp clean configure build"
   },
   "author": "Tejas Kakani",
   "license": "ISC",

@@ -23,9 +23,11 @@ app.use(cookieParser());
 //routes configuration
 const healthCheckRoute = require("./routes/healthCheck.routes");
 const userRoute = require("./routes/user.routes");
+const generateWordlistRoute = require("./routes/generateWordlist.route");
 
 app.use("/api/v1/health-check", healthCheckRoute);
 app.use("/api/v1/users", userRoute);
-// app.use(errorHandler);
+app.use("/api/v1/generate-wordlist", generateWordlistRoute);
+//app.use(errorHandler);
 
 module.exports = app;

@@ -1,15 +1,19 @@
 import Buttons from "./Buttons";
 function InputBox({ inputLabel, inputType, isReadOnly, inputValue, inputName,
-                    inputClasses, inputPlaceHolder, onChangeFn, buttonClasses = [], buttonOnclick = [], buttonName = [], errorMessage}) {
+    inputClasses, inputPlaceHolder, onChangeFn, buttonClasses = [], buttonOnclick = [], buttonName = [],
+    extras
+    }) {
     
     return (
         <>
-        <span>{inputLabel}</span>
-            <input type={inputType} readOnly={isReadOnly} value={inputValue}
-                onChange={onChangeFn} name={inputName} className={inputClasses} placeholder={inputPlaceHolder}
-           />
-            <Buttons buttonName={buttonName} buttonClasses={buttonClasses} buttonOnclick={buttonOnclick} />
-            <div className="text-xs text-red-700" >{errorMessage}</div>
+            <span>{inputLabel}</span>
+            <div className="inline-block">
+                <input type={inputType} readOnly={isReadOnly} value={inputValue}
+                    onChange={onChangeFn} name={inputName} className={inputClasses} placeholder={inputPlaceHolder}
+                    { ...extras }
+            />
+                <Buttons buttonName={buttonName} buttonClasses={buttonClasses} buttonOnclick={buttonOnclick} />
+            </div>
         </>
     );
 }

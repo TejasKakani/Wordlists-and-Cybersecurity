@@ -1,19 +1,32 @@
-const app = require("./config");
-const { connectDB } = require("./db/main.db");
 
-const addon = require("../build/Release/addon");
 
-const port = process.env.PORT || 3000;
+const cluster = require("cluster");
 
-connectDB.then((connectionInstance) => {
-    console.log(`MongoDB connected, DB_Host: ${connectionInstance.connection.host}`);
-    app.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
-        var list = addon.getStringArray();
-        console.log(list);
+const numCPUs = require("os").cpus().length;
+
+if (cluster.isPrimary) {
+
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+    cluster.on("exit", (worker) => {
+        cluster.fork();
     });
-}).catch((err) => {
-    console.log(err);
-});
+}
+else {
+    
+    const { connectDB } = require("./db/main.db");
+    const port = process.env.PORT || 3000;
+    const app = require("./config");
 
-module.exports = addon ;
+    connectDB.then((connectionInstance) => {
+        console.log(`[${process.pid}] MongoDB connected, DB_Host: ${connectionInstance.connection.host}`);
+        app.listen(port, () => {
+            console.log(`[${process.pid}] Server is running on port ${port}`);
+        });
+    }) 
+    .catch((err) => {
+        console.log(err);
+    });
+
+}

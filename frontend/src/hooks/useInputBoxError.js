@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-const useInputBoxError = () => {
+const useInputBoxError = (eMsg, eCls) => {
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [inputBoxClasses, setInputBoxClasses] = useState("border-2 border-indigo-300 rounded-l-lg");
+    const [errorMessage, setErrorMessage] = useState(eMsg);
+    const [inputBoxClasses, setInputBoxClasses] = useState(eCls);
 
     const errorState = [errorMessage, inputBoxClasses];
     const setErrorState = (errorMsg, inputBoxCls) => {

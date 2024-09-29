@@ -1,20 +1,24 @@
-import { Route, createRoutesFromElements, createBrowserRouter } from 'react-router-dom';
-import Clue from './components/Clue';
-import { RouterProvider } from 'react-router-dom'
-
-const router = createBrowserRouter(
-    createRoutesFromElements(
-        <Route path='/' element={<Clue />}>
-            <Route path='' element={<Clue />} />
-        </Route>
-    )
-);
+import Container from "./components/Container";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Clue from "./components/Clue";
+import Wordlist from "./components/Wordlist";
+import { WordlistProvider } from "./contexts/wordlist";
+import { useState } from "react";
 
 function App() {
+
+    const [wordlist, setWordlist] = useState([]);
+
     return (
-        <>
-            <RouterProvider router={router} />
-        </>
+        <WordlistProvider value={{ wordlist, setWordlist }}>
+            <Header />
+            <Container>
+            <Clue />
+            <Wordlist />
+            </Container>
+            <Footer />
+        </WordlistProvider>
     );
 }
 
