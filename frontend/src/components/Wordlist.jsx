@@ -5,7 +5,7 @@ function Wordlist() {
     const { wordlist } = useWordlist();
 
     return (
-        <div className="h-screen">
+        <div>
             <textarea readOnly className="h-full" cols={50} name="postContent" placeholder="Passwords" value={wordlist} />
         </div>
     );

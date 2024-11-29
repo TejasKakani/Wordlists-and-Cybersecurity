@@ -6,7 +6,15 @@ const { Worker } = require("worker_threads");
 
 const generateWordlist = asyncHandler((req, res) => {
     
-    const worker = new Worker("./src/utils/worker.js", { workerData: { clue: req.body.clue, length: req.body.length }});
+    const worker = new Worker("./src/utils/worker.js", {
+        workerData: {
+            clue: req.body.clue,
+            length: req.body.length,
+            startsWithClue: req.body.startsWithClue,
+            containsClue: req.body.containsClue,
+            endsWithClue: req.body.endsWithClue
+        }
+    });
 
     worker.on("message", (wordlistDataChunk) => {
      

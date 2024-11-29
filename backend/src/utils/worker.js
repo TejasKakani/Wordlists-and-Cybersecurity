@@ -3,9 +3,9 @@ const generate = require("../../build/Release/generate");
 const ApiError = require("./ApiError");
 const fs = require("fs");
 
-const { clue, length } = workerData;
+const { clue, length, startsWithClue, containsClue, endsWithClue } = workerData;
 
-generate.getStringArray(clue, Number(length), (linesWritten, error) => {
+generate.getStringArray(clue, Number(length), startsWithClue, containsClue, endsWithClue, (linesWritten, error) => {
 
     if (error) {
         fs.unlinkSync("wordlist.txt");

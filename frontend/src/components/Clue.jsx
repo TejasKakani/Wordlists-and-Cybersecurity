@@ -5,11 +5,70 @@ import useInputBoxError from "../hooks/useInputBoxError";
 import axios from "axios";
 import { useWordlist } from "../contexts/wordlist";
 
+function addClue(filterBlock, modifyCheckedClueArray, checkedClueArray, eachClue) {
+    if (filterBlock === "StartsWith") {
+        modifyCheckedClueArray.setStartsWithClue([...checkedClueArray.startsWithClue, eachClue]);
+    }
+    if (filterBlock === "Contains") {
+        modifyCheckedClueArray.setContainsClue([...checkedClueArray.containsClue, eachClue]);
+    }
+    if (filterBlock === "EndsWith") {
+        modifyCheckedClueArray.setEndsWithClue([...checkedClueArray.endsWithClue, eachClue]);
+    }
+}
+
+function removeClue(filterBlock, modifyCheckedClueArray, checkedClueArray, eachClue) {
+    if (filterBlock === "StartsWith") {
+        const newArray = checkedClueArray.startsWithClue.filter(item => item !== eachClue);
+        modifyCheckedClueArray.setStartsWithClue(newArray);
+    }
+    if (filterBlock === "Contains") {
+        const newArray = checkedClueArray.containsClue.filter(item => item !== eachClue);
+        modifyCheckedClueArray.setContainsClue(newArray);
+    }
+    if (filterBlock === "EndsWith") {
+        const newArray = checkedClueArray.endsWithClue.filter(item => item !== eachClue);
+        modifyCheckedClueArray.setEndsWithClue(newArray);
+    }
+}
+
+function CheckClue({ clue, filterBlock, checkedClueArray, modifyCheckedClueArray }) {
+    return (
+        <>
+            {
+            clue.map((eachClue, index) => {
+                return (
+                    <div key={eachClue}>
+                        <InputBox inputLabelRight={eachClue} inputType="checkbox" onChangeFn={
+                            (e) => {
+                                if (e.target.checked) {
+                                    console.log("checked");
+                                    addClue(filterBlock, modifyCheckedClueArray, checkedClueArray, eachClue);
+                                }
+                                else {
+                                    console.log("unchecked");
+                                    removeClue(filterBlock, modifyCheckedClueArray, checkedClueArray, eachClue);
+                                }
+                            }
+                        }
+                        inputClasses="w-1/1 mx-1" />
+                    </div>
+                );
+            })
+            }
+        </>
+    );
+}
+
 function Clue() {
 
     const [clue, setClue] = useState([]);
 
     const [length, setLength] = useState(2);
+
+    const [startsWithClue, setStartsWithClue] = useState([]);
+    const [containsClue, setContainsClue] = useState([]);
+    const [endsWithClue, setEndsWithClue] = useState([]);
 
     const [modifyClue, setModifyClue] = useState("");
 
@@ -58,7 +117,10 @@ function Clue() {
         setWordlist("Loading...");
         await axios.post("http://localhost:5000/api/v1/generate-wordlist", {
             clue,
-            length
+            length,
+            startsWithClue,
+            containsClue,
+            endsWithClue
         })
         .then(response => {
             setWordlist(response.data);
@@ -70,7 +132,7 @@ function Clue() {
 
     }
 
-    var generate = useCallback(generateWordlist, [clue, length, setErrorState1, setWordlist]);
+    var generate = useCallback(generateWordlist, [clue, containsClue, endsWithClue, length, setErrorState1, setWordlist, startsWithClue]);
 
     useEffect(() => {
         if (clue.length !== 0) {
@@ -78,13 +140,37 @@ function Clue() {
         }
     }, [clue, setErrorState1]);
 
+    const [startsWith, setStartsWith] = useState(false);
+    const [contains, setContains] = useState(false);
+    const [endsWith, setEndsWith] = useState(false);
+
+    useEffect(() => {
+        startsWithClue.map((eachClue) => {
+            if (!clue.includes(eachClue)) {
+                setStartsWithClue(startsWithClue.filter(item => item !== eachClue));
+            }
+        });
+        containsClue.map((eachClue) => {
+            if (!clue.includes(eachClue)) {
+                setContainsClue(containsClue.filter(item => item !== eachClue));
+            }
+        });
+        endsWithClue.map((eachClue) => {
+            if (!clue.includes(eachClue)) {
+                setEndsWithClue(endsWithClue.filter(item => item !== eachClue));
+            }
+        });
+    }, [clue, containsClue, endsWithClue, startsWithClue]);
+
+    console.log(startsWithClue, containsClue, endsWithClue);
+
     return (
         <div>
-            <InputBox inputLabel="Given Clues: " inputType="text" isReadOnly={true} inputValue={clue} inputName="clues"
+            <InputBox inputLabelLeft="Given Clues: " inputType="text" isReadOnly={true} inputValue={clue} inputName="clues"
                 inputClasses={errorState1[1]} inputPlaceHolder="" />
             <div className="text-xs text-red-700" >{errorState1[0]}</div>
             <br />
-            <InputBox inputLabel="Add/Remove Clue " inputType="text" isReadOnly={false} inputValue={modifyClue} inputName="addClue"
+            <InputBox inputLabelLeft="Add/Remove Clue " inputType="text" isReadOnly={false} inputValue={modifyClue} inputName="addClue"
                 inputClasses={errorState2[1]} inputPlaceHolder="Clue"
                 onChangeFn={(e) => {
                     setErrorState2("", "border-2 border-indigo-300 rounded-l-lg");
@@ -97,13 +183,43 @@ function Clue() {
             />
             <div className="text-xs text-red-700" >{errorState2[0]}</div>
             <br />
-            <InputBox inputLabel="Password Length" inputType="range" inputValue={length} onChangeFn={
+            <InputBox inputLabelLeft="Password Length" inputType="range" inputValue={length} onChangeFn={
                 (e) => {
-                
                     return setLength(e.target.value);
                 }
             } inputClasses="w-1/1 mx-1" extras={{ min: 2, max: 15, step: 1 }} />
             <label>Length: {length}</label>
+            <br />
+            <br />
+            <div className="flex justify-evenly">
+                <div>
+                    <InputBox inputLabelRight="Starts with" inputType="checkbox" onChangeFn={() => { setStartsWith(!startsWith) }} inputClasses="w-1/1 mx-1" extras={{ checked: startsWith }} />
+                    <div style={{ display: startsWith ? "block" : "none" }}>
+                    <CheckClue clue={clue} filterBlock="StartsWith"
+                        checkedClueArray={{ startsWithClue, containsClue, endsWithClue }}
+                        modifyCheckedClueArray={{ setStartsWithClue, setContainsClue, setEndsWithClue }}
+                        />
+                    </div>
+                </div>
+                <div>
+                    <InputBox inputLabelRight="Contains" inputType="checkbox" onChangeFn={() => { setContains(!contains) }} inputClasses="w-1/1 mx-1" extras={{ checked: contains }} />
+                    <div style={{ display: contains ? "block" : "none" }}>
+                    <CheckClue clue={clue} filterBlock="Contains"
+                        checkedClueArray={{ startsWithClue, containsClue, endsWithClue }}
+                        modifyCheckedClueArray={{setStartsWithClue, setContainsClue, setEndsWithClue}}
+                        />
+                    </div>
+                </div>
+                <div>
+                    <InputBox inputLabelRight="Ends with" inputType="checkbox" onChangeFn={() => { setEndsWith(!endsWith) }} inputClasses="w-1/1 mx-1" extras={{ checked: endsWith }} />
+                    <div style={{ display: endsWith ? "block" : "none" }}>
+                    <CheckClue clue={clue} filterBlock="EndsWith"
+                        checkedClueArray={{ startsWithClue, containsClue, endsWithClue }}
+                        modifyCheckedClueArray={{ setStartsWithClue, setContainsClue, setEndsWithClue }}
+                        />
+                    </div>
+                </div>
+            </div>
             <br />
             <br />
             <button onClick={generate} className="mx-32 px-2 border-2 border-indigo-300 active:bg-indigo-100 bg-indigo-300 rounded-lg">Generate Password</button>
