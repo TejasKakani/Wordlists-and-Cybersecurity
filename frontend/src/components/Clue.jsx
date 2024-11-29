@@ -32,21 +32,34 @@ function removeClue(filterBlock, modifyCheckedClueArray, checkedClueArray, eachC
     }
 }
 
+function getIndex(array, filterBlock, clue) {
+    if (filterBlock === "StartsWith") {
+        return array.startsWithClue.indexOf(clue);
+    }
+    if (filterBlock === "Contains") {
+        return array.containsClue.indexOf(clue);
+    }
+    if (filterBlock === "EndsWith") {
+        return array.endsWithClue.indexOf(clue);
+    }
+}
+
 function CheckClue({ clue, filterBlock, checkedClueArray, modifyCheckedClueArray }) {
+    const padding = "----->"
     return (
         <>
             {
-            clue.map((eachClue, index) => {
+            clue.map((eachClue) => {
                 return (
                     <div key={eachClue}>
-                        <InputBox inputLabelRight={eachClue} inputType="checkbox" onChangeFn={
+                        <InputBox
+                            inputLabelRight={`${eachClue} ${(getIndex(checkedClueArray, filterBlock, eachClue)) >= 0 ? `${padding} ${getIndex(checkedClueArray, filterBlock, eachClue) + 1}` : ""  }`}
+                            inputType="checkbox" onChangeFn={
                             (e) => {
                                 if (e.target.checked) {
-                                    console.log("checked");
                                     addClue(filterBlock, modifyCheckedClueArray, checkedClueArray, eachClue);
                                 }
                                 else {
-                                    console.log("unchecked");
                                     removeClue(filterBlock, modifyCheckedClueArray, checkedClueArray, eachClue);
                                 }
                             }
@@ -65,6 +78,10 @@ function Clue() {
     const [clue, setClue] = useState([]);
 
     const [length, setLength] = useState(2);
+
+    const [startsWith, setStartsWith] = useState(false);
+    const [contains, setContains] = useState(false);
+    const [endsWith, setEndsWith] = useState(false);
 
     const [startsWithClue, setStartsWithClue] = useState([]);
     const [containsClue, setContainsClue] = useState([]);
@@ -118,9 +135,9 @@ function Clue() {
         await axios.post("http://localhost:5000/api/v1/generate-wordlist", {
             clue,
             length,
-            startsWithClue,
-            containsClue,
-            endsWithClue
+            ...(startsWith && {startsWithClue}),
+            ...(contains && {containsClue}),
+            ...(endsWith && {endsWithClue})
         })
         .then(response => {
             setWordlist(response.data);
@@ -140,10 +157,6 @@ function Clue() {
         }
     }, [clue, setErrorState1]);
 
-    const [startsWith, setStartsWith] = useState(false);
-    const [contains, setContains] = useState(false);
-    const [endsWith, setEndsWith] = useState(false);
-
     useEffect(() => {
         startsWithClue.map((eachClue) => {
             if (!clue.includes(eachClue)) {
@@ -161,8 +174,6 @@ function Clue() {
             }
         });
     }, [clue, containsClue, endsWithClue, startsWithClue]);
-
-    console.log(startsWithClue, containsClue, endsWithClue);
 
     return (
         <div>

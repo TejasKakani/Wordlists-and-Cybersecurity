@@ -10,9 +10,9 @@ const generateWordlist = asyncHandler((req, res) => {
         workerData: {
             clue: req.body.clue,
             length: req.body.length,
-            startsWithClue: req.body.startsWithClue,
-            containsClue: req.body.containsClue,
-            endsWithClue: req.body.endsWithClue
+            startsWithClue: req.body.startsWithClue || [],
+            containsClue: req.body.containsClue || [],
+            endsWithClue: req.body.endsWithClue || []
         }
     });
 
