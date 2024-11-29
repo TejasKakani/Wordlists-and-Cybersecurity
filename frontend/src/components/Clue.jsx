@@ -175,6 +175,21 @@ function Clue() {
         });
     }, [clue, containsClue, endsWithClue, startsWithClue]);
 
+    const [containsWithDisabled, setContainsWithDisabled] = useState(false);
+
+    useEffect(() => {
+        if (clue.length > 0) {
+            if (length - (startsWithClue.length + endsWithClue.length) <= 0) {
+                setContainsWithDisabled(true);
+                setContains(false);
+            }
+            else {
+                setContainsWithDisabled(false);
+                setContains(true);
+            }
+        }
+    }, [length, startsWithClue, endsWithClue]);
+
     return (
         <div>
             <InputBox inputLabelLeft="Given Clues: " inputType="text" isReadOnly={true} inputValue={clue} inputName="clues"
@@ -213,7 +228,7 @@ function Clue() {
                     </div>
                 </div>
                 <div>
-                    <InputBox inputLabelRight="Contains" inputType="checkbox" onChangeFn={() => { setContains(!contains) }} inputClasses="w-1/1 mx-1" extras={{ checked: contains }} />
+                    <InputBox inputLabelRight="Contains" inputType="checkbox" onChangeFn={() => { setContains(!contains) }} inputClasses="w-1/1 mx-1" extras={{ checked: contains, disabled: containsWithDisabled }} />
                     <div style={{ display: contains ? "block" : "none" }}>
                     <CheckClue clue={clue} filterBlock="Contains"
                         checkedClueArray={{ startsWithClue, containsClue, endsWithClue }}

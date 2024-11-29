@@ -2,7 +2,7 @@
 function Container({ children }) {
     
     return (
-        <div className="px-5 py-5 lg:flex md:flex sm:grid justify-evenly">
+        <div className="p-5 md:flex justify-evenly">
             {children}
         </div>
   );
