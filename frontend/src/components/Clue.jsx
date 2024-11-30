@@ -178,16 +178,18 @@ function Clue() {
     const [containsWithDisabled, setContainsWithDisabled] = useState(false);
 
     useEffect(() => {
-        if (clue.length > 0) {
             if (length - (startsWithClue.length + endsWithClue.length) <= 0) {
                 setContainsWithDisabled(true);
-                setContains(false);
+                if(contains) {
+                    setContains(false);
+                }
             }
             else {
                 setContainsWithDisabled(false);
-                setContains(true);
+                if(!contains && containsClue.length > 0) {
+                    setContains(true);
+                }
             }
-        }
     }, [length, startsWithClue, endsWithClue]);
 
     return (
